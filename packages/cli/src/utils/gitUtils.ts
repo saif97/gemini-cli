@@ -24,3 +24,24 @@ export function isGitHubRepository(): boolean {
     return false;
   }
 }
+
+export function getGitHubRepoInfo(): { owner: string; repo: string } | null {
+  try {
+    const remoteUrl = execSync('git remote get-url origin', {
+      encoding: 'utf-8',
+    }).trim();
+
+    // Matches either https://github.com/owner/repo.git or git@github.com:owner/repo.git
+    const match = remoteUrl.match(
+      /(?:https?:\/\/|git@)github\.com(?::|\/)([^/]+)\/([^/]+?)(?:\.git)?$/,
+    );
+
+    if (match && match[1] && match[2]) {
+      return { owner: match[1], repo: match[2] };
+    }
+
+    return null;
+  } catch (_e) {
+    return null;
+  }
+}

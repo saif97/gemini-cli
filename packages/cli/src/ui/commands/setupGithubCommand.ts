@@ -6,13 +6,25 @@
 
 import path from 'path';
 import { execSync } from 'child_process';
-import { isGitHubRepository } from '../../utils/gitUtils.js';
+import { getGitHubRepoInfo, isGitHubRepository } from '../../utils/gitUtils.js';
 
 import {
   CommandKind,
   SlashCommand,
   SlashCommandActionReturn,
 } from './types.js';
+
+function getOpenUrlsCommand(): string {
+  const readmeUrl =
+    'https://github.com/google-github-actions/run-gemini-cli/blob/v0/README.md#quick-start';
+  const repoInfo = getGitHubRepoInfo();
+  if (!repoInfo) {
+    return `open ${readmeUrl}`;
+  }
+
+  const secretsUrl = `https://github.com/${repoInfo.owner}/${repoInfo.repo}/settings/secrets/actions`;
+  return `open ${readmeUrl} ${secretsUrl}`;
+}
 
 export const setupGithubCommand: SlashCommand = {
   name: 'setup-github',
@@ -54,7 +66,7 @@ export const setupGithubCommand: SlashCommand = {
         return `curl -fsSL -o "${gitRootRepo}/.github/workflows/${fileName}" "${workflowBaseUrl}/${workflow}"`;
       }),
       'echo "Workflows downloaded successfully. Follow steps in https://github.com/google-github-actions/run-gemini-cli/blob/v0/README.md#quick-start (skipping the /setup-github step) to complete setup."',
-      'open https://github.com/google-github-actions/run-gemini-cli/blob/v0/README.md#quick-start',
+      getOpenUrlsCommand(),
     ].join(' && ');
     return {
       type: 'tool',
