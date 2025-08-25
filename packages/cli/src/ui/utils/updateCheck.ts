@@ -80,18 +80,7 @@ export async function checkForUpdates(): Promise<UpdateObject | null> {
           update: { ...bestUpdate, current: currentVersion },
         };
       }
-    } else {
-      const updateInfo = await createNotifier('latest').fetchInfo();
-
-      if (updateInfo && semver.gt(updateInfo.latest, currentVersion)) {
-        const message = `Gemini CLI update available! ${currentVersion} → ${updateInfo.latest}`;
-        return {
-          message,
-          update: { ...updateInfo, current: currentVersion },
-        };
-      }
-    }
-
+    } 
     return null;
   } catch (e) {
     console.warn('Failed to check for updates: ' + e);

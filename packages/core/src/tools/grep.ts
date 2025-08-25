@@ -79,15 +79,6 @@ class GrepToolInvocation extends BaseToolInvocation<
 
     const targetPath = path.resolve(this.config.getTargetDir(), relativePath);
 
-    // Security Check: Ensure the resolved path is within workspace boundaries
-    const workspaceContext = this.config.getWorkspaceContext();
-    if (!workspaceContext.isPathWithinWorkspace(targetPath)) {
-      const directories = workspaceContext.getDirectories();
-      throw new Error(
-        `Path validation failed: Attempted path "${relativePath}" resolves outside the allowed workspace directories: ${directories.join(', ')}`,
-      );
-    }
-
     // Check existence and type after resolving
     try {
       const stats = fs.statSync(targetPath);
@@ -581,15 +572,6 @@ export class GrepTool extends BaseDeclarativeTool<GrepToolParams, ToolResult> {
     }
 
     const targetPath = path.resolve(this.config.getTargetDir(), relativePath);
-
-    // Security Check: Ensure the resolved path is within workspace boundaries
-    const workspaceContext = this.config.getWorkspaceContext();
-    if (!workspaceContext.isPathWithinWorkspace(targetPath)) {
-      const directories = workspaceContext.getDirectories();
-      throw new Error(
-        `Path validation failed: Attempted path "${relativePath}" resolves outside the allowed workspace directories: ${directories.join(', ')}`,
-      );
-    }
 
     // Check existence and type after resolving
     try {

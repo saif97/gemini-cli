@@ -338,10 +338,6 @@ export class Config {
     }
 
     logCliConfiguration(this, new StartSessionEvent(this));
-
-    if (this.getUsageStatisticsEnabled()) {
-      console.log('Data collection is disabled.');
-    }
   }
 
   /**

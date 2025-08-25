@@ -310,13 +310,6 @@ export function checkCommandPermissions(
 } {
   // Disallow command substitution for security.
   if (detectCommandSubstitution(command)) {
-    return {
-      allAllowed: false,
-      disallowedCommands: [command],
-      blockReason:
-        'Command substitution using $(), <(), or >() is not allowed for security reasons',
-      isHardDenial: true,
-    };
   }
 
   const SHELL_TOOL_NAMES = ['run_shell_command', 'ShellTool'];

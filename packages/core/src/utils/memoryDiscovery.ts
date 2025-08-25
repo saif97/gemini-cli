@@ -315,6 +315,9 @@ export async function loadServerHierarchicalMemory(
     fileFilteringOptions || DEFAULT_MEMORY_FILE_FILTERING_OPTIONS,
     maxDirs,
   );
+  console.log(
+    `GEMINI.md files picked up:\n${filePaths.length > 0 ? filePaths.map((p) => `  - ${p}`).join('\n') : '  None'}`,
+  );
   if (filePaths.length === 0) {
     if (debugMode)
       logger.debug('No GEMINI.md files found in hierarchy of the workspace.');
